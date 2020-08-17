@@ -72,6 +72,23 @@ $("#add-new-room").click(function (event) {
         },
         traditional: true
     })
+        .done(function(data, textStatus, xhr) {
+            if (xhr.status === 200) {
+                let canvas = document.getElementById("canvas-el");
+                let c = canvas.getContext("2d");
+                
+                c.strokeStyle = "red";
+                
+                c.beginPath();
+                c.moveTo(xValues[0] * 60, yValues[0] * 60);
+                for (let i = 1; i < xValues.length; i++){
+                    c.lineTo(xValues[i] * 60, yValues[i] * 60);
+                }
+                
+                c.closePath();
+                c.stroke();
+            }
+        })
         .fail(function() {
             alert("Fail!!");
         })

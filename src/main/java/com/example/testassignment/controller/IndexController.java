@@ -3,10 +3,13 @@ package com.example.testassignment.controller;
 import com.example.testassignment.dto.CoordinateDto;
 import com.example.testassignment.service.PointsService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 @Controller
 public class IndexController {
@@ -18,11 +21,16 @@ public class IndexController {
         return "index.html";
     }
 
+    @ResponseBody
     @PostMapping("/add")
-    public String addNewRoom(@ModelAttribute CoordinateDto coordinateDto) {
-        pointsService.addNewRoom(coordinateDto.getRoomPoints());
+    public ResponseEntity<?> addNewRoom(@ModelAttribute CoordinateDto coordinateDto) {
+        boolean result = pointsService.addNewRoom(coordinateDto.getRoomPoints());
 
-        return "redirect:/";
+        if (result) {
+            return new ResponseEntity(HttpStatus.OK);
+        }
+
+        return new ResponseEntity(HttpStatus.BAD_REQUEST);
     }
 
 }
