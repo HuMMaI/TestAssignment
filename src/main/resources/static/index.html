@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+
+    <style>
+        #canvas-el {
+            border: 5px solid black;
+            background-size: 100%;
+        }
+
+        .main {
+            display: flex;
+            flex-direction: row;
+            justify-content: space-between;
+        }
+    </style>
+
+</head>
+<body>
+
+<div class="main">
+    <div>
+        <canvas id="canvas-el" width="600px" height="600px">
+
+        </canvas>
+    </div>
+
+    <div>
+        <div>
+            <span>Number of point:</span>
+            <input type="number" id="number-of-point">
+            <button id="add-number-of-point">Ok</button>
+        </div>
+
+        <div style="display: none" id="form">
+            <form>
+                <div id="form-elements">
+
+                </div>
+
+                <input type="submit" value="Add point" id="add-new-room">
+            </form>
+        </div>
+    </div>
+</div>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<script src="index.js"></script>
+
+</body>
+</html>
