@@ -62,4 +62,12 @@ public class IndexController {
         return new ResponseEntity("Error! Your room intersects with another room!", HttpStatus.BAD_REQUEST);
     }
 
+    @ResponseBody
+    @DeleteMapping("/rooms/delete/{roomId}")
+    public ResponseEntity<?> deleteRoom(@PathVariable("roomId") int roomId) {
+        RoomUpdateDto roomUpdateDto = pointsService.deleteRoom(roomId);
+
+        return new ResponseEntity(roomUpdateDto, HttpStatus.OK);
+    }
+
 }

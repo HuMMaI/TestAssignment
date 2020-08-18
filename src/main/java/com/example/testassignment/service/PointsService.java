@@ -21,6 +21,10 @@ public class PointsService {
             return "Error! There are no right angles in your room!";
         }
 
+        if (!roomAreaChecker(points)) {
+            return "Error! X and Y value cannot be more than 10!";
+        }
+
         int preLastX = points[points.length - 1][0] - points[points.length - 2][0];
         int preLastY = points[points.length - 1][1] - points[points.length - 2][1];
 
@@ -48,6 +52,16 @@ public class PointsService {
         return "";
     }
 
+    private boolean roomAreaChecker(int[][] points) {
+        for (int i = 0; i < points.length; i++) {
+            if (points[i][0] > 10 || points[i][1] > 10) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
     public List<Room> getRooms() {
         return roomRepository.getRooms();
     }
@@ -65,15 +79,9 @@ public class PointsService {
     }
 
     public Optional<RoomUpdateDto> updateOnBoardValue(Room room) {
-        RoomUpdateDto roomUpdateDto = new RoomUpdateDto();
-
         int[][] points = roomRepository.updateOnBoardValue(room);
 
-        Integer[] x = Arrays.stream(points).map(s -> s[0]).toArray(Integer[]::new);
-        Integer[] y = Arrays.stream(points).map(s -> s[1]).toArray(Integer[]::new);
-
-        roomUpdateDto.setX(x);
-        roomUpdateDto.setY(y);
+        RoomUpdateDto roomUpdateDto = roomUpdateDtoParser(points);
 
         List<int[][]> onBoardPoints = getOnBoardRooms().stream()
                 .filter(s -> s.getId() != room.getId())
@@ -175,5 +183,23 @@ public class PointsService {
         }
 
         return true;
+    }
+
+    public RoomUpdateDto deleteRoom(int roomId) {
+        int[][] points = roomRepository.deleteRoomById(roomId);
+
+        return roomUpdateDtoParser(points);
+    }
+
+    private RoomUpdateDto roomUpdateDtoParser(int[][] points) {
+        RoomUpdateDto roomUpdateDto = new RoomUpdateDto();
+
+        Integer[] x = Arrays.stream(points).map(s -> s[0]).toArray(Integer[]::new);
+        Integer[] y = Arrays.stream(points).map(s -> s[1]).toArray(Integer[]::new);
+
+        roomUpdateDto.setX(x);
+        roomUpdateDto.setY(y);
+
+        return roomUpdateDto;
     }
 }

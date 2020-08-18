@@ -16,6 +16,8 @@ window.onload = () => {
         c.lineTo(600, j);
         c.stroke();
     }
+
+    showAllRooms();
 };
 
 $("#add-number-of-point").click(function(event) {
@@ -70,35 +72,7 @@ $("#add-new-room").click(function (event) {
 
                 showOnBoardRooms();
 
-                $.get("/rooms")
-                    .done(function(data) {
-                        let tableBody = "";
-
-                        jQuery.each(data, function(num, room) {
-
-                            tableBody += "<tr>" +
-                                "<td>" + room.id + "</td>\n" +
-                                "<td>" + room.numberOfPoint + "</td>\n" +
-                                "<td>";
-
-                            for (let i = 0; i < room.numberOfPoint; i++) {
-                                tableBody += "(" + room.points[i][0] + "; " + room.points[i][1] + ")";
-
-                                if (i !== room.numberOfPoint - 1) {
-                                    tableBody += ", ";
-                                }
-                            }
-
-                            tableBody += "</td>\n" +
-                                "<td><button class=\"add-btn\" room-id=\"" + room.id + "\" id=\"btn-" + room.id + "\">Add</button></td>" +
-                                "</tr>";
-
-                        });
-
-                        $("#rooms-table").html(tableBody);
-
-                        disableBtns();
-                    })
+                showAllRooms();
             }
         })
         .fail(function(data) {
@@ -137,7 +111,7 @@ let showOnBoardRooms = () => {
             jQuery.each(rooms, function (num, room) {
                 onBoardData += "<tr>\n" +
                     "<td>" + room.id + "</td>\n" +
-                    "<td><button class=\"del-btn\" id=\"del-bth" + room.id + "\" room-id=\"" + room.id + "\">Del</button></td>\n" +
+                    "<td><button class=\"del-btn\" room-id=\"" + room.id + "\">Del</button></td>\n" +
                     "</tr>\n";
             });
 
@@ -189,6 +163,55 @@ let disableBtns = () => {
         });
 };
 
-$(document).on("click", ".clear-btn", function() {
+$(document).on("click", ".room-del-btn", function() {
+    let roomId = $(this).attr("room-id");
+
+    $.ajax({
+        url: "/rooms/delete/" + roomId,
+        type: "DELETE"
+    })
+        .done(function(data) {
+            drawRoom(data.x, data.y, "black");
+
+            showAllRooms();
+
+            showOnBoardRooms();
+        })
+        .fail(function() {
+            alert("Fail!!!");
+        });
 
 });
+
+let showAllRooms = () => {
+    $.get("/rooms")
+        .done(function(data) {
+            let tableBody = "";
+
+            jQuery.each(data, function(num, room) {
+
+                tableBody += "<tr>" +
+                    "<td>" + room.id + "</td>\n" +
+                    "<td>" + room.numberOfPoint + "</td>\n" +
+                    "<td>";
+
+                for (let i = 0; i < room.numberOfPoint; i++) {
+                    tableBody += "(" + room.points[i][0] + "; " + room.points[i][1] + ")";
+
+                    if (i !== room.numberOfPoint - 1) {
+                        tableBody += ", ";
+                    }
+                }
+
+                tableBody += "</td>\n" +
+                    "<td><button class=\"add-btn\" room-id=\"" + room.id + "\" id=\"btn-" + room.id + "\">Add</button></td>" +
+                    "<td><button class=\"room-del-btn\" room-id=\"" + room.id + "\" id=\"del-bth" + room.id + "\">Del</button></td>" +
+                    "</tr>";
+
+            });
+
+            $("#rooms-table").html(tableBody);
+
+            disableBtns();
+        });
+};

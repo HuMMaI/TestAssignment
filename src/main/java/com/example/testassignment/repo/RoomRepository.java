@@ -32,4 +32,12 @@ public class RoomRepository {
 
         return room.getPoints();
     }
+
+    public int[][] deleteRoomById(int roomId) {
+        int[][] points = rooms.get(roomId).getPoints();
+
+        rooms.remove(roomId);
+
+        return points;
+    }
 }
