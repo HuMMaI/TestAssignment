@@ -17,16 +17,20 @@ public class PointsService {
     private RoomRepository roomRepository;
 
     public boolean addNewRoom(int[][] points) {
+        if (!rightAngleChecker(points)){
+            return false;
+        }
+
         int preLastX = points[points.length - 1][0] - points[points.length - 2][0];
         int preLastY = points[points.length - 1][1] - points[points.length - 2][1];
 
         int lastX = points[0][0] - points[points.length - 1][0];
         int lastY = points[0][1] - points[points.length - 1][1];
 
-        boolean clockwiseCond1 = preLastX > 0 && lastY > 0;
-        boolean clockwiseCond2 = preLastY > 0 && lastX < 0;
-        boolean clockwiseCond3 = preLastX < 0 && lastY < 0;
-        boolean clockwiseCond4 = preLastY < 0 && lastX > 0;
+        boolean clockwiseCond1 = (preLastX > 0 && preLastY == 0) && (lastY > 0 && lastX == 0);
+        boolean clockwiseCond2 = (preLastY > 0 && preLastX == 0) && (lastX < 0 && lastY == 0);
+        boolean clockwiseCond3 = (preLastX < 0 && preLastY == 0) && (lastY < 0 && lastX == 0);
+        boolean clockwiseCond4 = (preLastY < 0 && preLastX == 0) && (lastX > 0 && lastY == 0);
 
         if (!(clockwiseCond1 || clockwiseCond2 || clockwiseCond3 || clockwiseCond4)) {
             return false;
@@ -84,6 +88,19 @@ public class PointsService {
         }
 
         return Optional.of(roomUpdateDto);
+    }
+
+    private boolean rightAngleChecker(int[][] points) {
+        for (int i = 1; i < points.length; i++) {
+            int x = points[i][0] - points[i - 1][0];
+            int y = points[i][1] - points[i - 1][1];
+
+            if (x != 0 && y != 0) {
+                return false;
+            }
+        }
+
+        return true;
     }
 
     private boolean intersectionChecker(int[][] points, List<int[][]> onBoardPoints) {
