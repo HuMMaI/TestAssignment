@@ -55,14 +55,6 @@ $("#add-new-room").click(function (event) {
         return parseInt(yValue.value, 10);
     });
 
-    // let roomPoints = [];
-    //
-    // for (let i = 0; i < xValues.length; i++) {
-    //     roomPoints[i] = [parseInt(xValues[i]), parseInt(yValues[i])];
-    // }
-
-    // console.log(typeof(roomPoints));
-
     $.ajax({
         url: "/add",
         type: "POST",
@@ -88,19 +80,7 @@ $("#add-new-room").click(function (event) {
                 c.closePath();
                 c.stroke();
 
-                $.get("/rooms/on-board")
-                    .done(function(rooms) {
-                        let onBoardData = "";
-
-                        jQuery.each(rooms, function (num, room) {
-                            onBoardData += "<tr>\n" +
-                                "<td>" + room.id + "</td>\n" +
-                                "<td><button room-id=\"" + room.id + "\">Del</button></td>\n" +
-                                "</tr>\n";
-                        });
-
-                        $("#on-board-data").html(onBoardData);
-                    });
+                showOnBoardRooms();
 
                 $.get("/rooms")
                     .done(function(data) {
@@ -135,4 +115,37 @@ $("#add-new-room").click(function (event) {
             alert("Fail!!");
         })
 });
+
+$(document).on("click", ".del-btn", function(event) {
+    event.preventDefault();
+
+    let roomId = $(".del-btn").attr("room-id");
+
+    $.ajax({
+        url: "/rooms/on-board-upd?roomId=" + roomId + "&value=false",
+        type: "PUT"
+    })
+        .done(function () {
+            showOnBoardRooms();
+        })
+        .fail(function() {
+            alert("Fail!!!");
+    });
+});
+
+let showOnBoardRooms = () => {
+    $.get("/rooms/on-board")
+        .done(function(rooms) {
+            let onBoardData = "";
+
+            jQuery.each(rooms, function (num, room) {
+                onBoardData += "<tr>\n" +
+                    "<td>" + room.id + "</td>\n" +
+                    "<td><button class=\"del-btn\" room-id=\"" + room.id + "\">Del</button></td>\n" +
+                    "</tr>\n";
+            });
+
+            $("#on-board-data").html(onBoardData);
+        });
+};
 

@@ -20,4 +20,14 @@ public class RoomRepository {
     public List<Room> getRooms() {
         return rooms;
     }
+
+    public Room getRoomById(int roomId) {
+        return rooms.get(roomId);
+    }
+
+    public void updateOnBoardValue(Room newRoom) {
+        Room room = rooms.get(newRoom.getId());
+
+        room.setOnBoard(newRoom.isOnBoard());
+    }
 }

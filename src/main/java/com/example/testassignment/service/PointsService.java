@@ -42,4 +42,12 @@ public class PointsService {
                 .filter(Room::isOnBoard)
                 .collect(Collectors.toList());
     }
+
+    public Room getRoomById(int roomId) {
+        return roomRepository.getRoomById(roomId);
+    }
+
+    public void updateOnBoardValue(Room room) {
+        roomRepository.updateOnBoardValue(room);
+    }
 }
