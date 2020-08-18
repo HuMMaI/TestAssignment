@@ -1,6 +1,7 @@
 package com.example.testassignment.controller;
 
-import com.example.testassignment.dto.CoordinateDto;
+import com.example.testassignment.dtos.CoordinateDto;
+import com.example.testassignment.dtos.RoomUpdateDto;
 import com.example.testassignment.entity.Room;
 import com.example.testassignment.service.PointsService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -47,14 +48,12 @@ public class IndexController {
 
     @ResponseBody
     @PutMapping("/rooms/on-board-upd")
-    public ResponseEntity<?> updateOnBoardRooms(@RequestParam("roomId") int roomId, @RequestParam("value") boolean value) {
+    public RoomUpdateDto updateOnBoardRooms(@RequestParam("roomId") int roomId, @RequestParam("value") boolean value) {
         Room room = pointsService.getRoomById(roomId);
 
         room.setOnBoard(value);
 
-        pointsService.updateOnBoardValue(room);
-
-        return new ResponseEntity(HttpStatus.OK);
+        return pointsService.updateOnBoardValue(room);
     }
 
 }

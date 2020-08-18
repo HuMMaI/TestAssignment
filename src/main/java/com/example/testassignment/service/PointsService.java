@@ -1,10 +1,12 @@
 package com.example.testassignment.service;
 
+import com.example.testassignment.dtos.RoomUpdateDto;
 import com.example.testassignment.entity.Room;
 import com.example.testassignment.repo.RoomRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -47,7 +49,17 @@ public class PointsService {
         return roomRepository.getRoomById(roomId);
     }
 
-    public void updateOnBoardValue(Room room) {
-        roomRepository.updateOnBoardValue(room);
+    public RoomUpdateDto updateOnBoardValue(Room room) {
+        RoomUpdateDto roomUpdateDto = new RoomUpdateDto();
+
+        int[][] points = roomRepository.updateOnBoardValue(room);
+
+        Integer[] x = Arrays.stream(points).map(s -> s[0]).toArray(Integer[]::new);
+        Integer[] y = Arrays.stream(points).map(s -> s[1]).toArray(Integer[]::new);
+
+        roomUpdateDto.setX(x);
+        roomUpdateDto.setY(y);
+
+        return roomUpdateDto;
     }
 }

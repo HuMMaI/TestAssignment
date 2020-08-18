@@ -66,19 +66,7 @@ $("#add-new-room").click(function (event) {
     })
         .done(function(data, textStatus, xhr) {
             if (xhr.status === 200) {
-                let canvas = document.getElementById("canvas-el");
-                let c = canvas.getContext("2d");
-                
-                c.strokeStyle = "red";
-                
-                c.beginPath();
-                c.moveTo(xValues[0] * 60, yValues[0] * 60);
-                for (let i = 1; i < xValues.length; i++){
-                    c.lineTo(xValues[i] * 60, yValues[i] * 60);
-                }
-                
-                c.closePath();
-                c.stroke();
+                drawRoom(xValues, yValues, "red");
 
                 showOnBoardRooms();
 
@@ -125,7 +113,9 @@ $(document).on("click", ".del-btn", function(event) {
         url: "/rooms/on-board-upd?roomId=" + roomId + "&value=false",
         type: "PUT"
     })
-        .done(function () {
+        .done(function (data) {
+            drawRoom(data.x, data.y, "black");
+
             showOnBoardRooms();
         })
         .fail(function() {
@@ -148,4 +138,20 @@ let showOnBoardRooms = () => {
             $("#on-board-data").html(onBoardData);
         });
 };
+
+let drawRoom = (xValues, yValues, color) => {
+    let canvas = document.getElementById("canvas-el");
+    let c = canvas.getContext("2d");
+
+    c.strokeStyle = color;
+
+    c.beginPath();
+    c.moveTo(xValues[0] * 60, yValues[0] * 60);
+    for (let i = 1; i < xValues.length; i++){
+        c.lineTo(xValues[i] * 60, yValues[i] * 60);
+    }
+
+    c.closePath();
+    c.stroke();
+}
 

@@ -25,9 +25,11 @@ public class RoomRepository {
         return rooms.get(roomId);
     }
 
-    public void updateOnBoardValue(Room newRoom) {
+    public int[][] updateOnBoardValue(Room newRoom) {
         Room room = rooms.get(newRoom.getId());
 
         room.setOnBoard(newRoom.isOnBoard());
+
+        return room.getPoints();
     }
 }

@@ -1,4 +1,4 @@
-package com.example.testassignment.dto;
+package com.example.testassignment.dtos;
 
 public class CoordinateDto {
     private Integer[] x;
