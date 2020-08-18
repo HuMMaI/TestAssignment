@@ -1,8 +1,11 @@
 package com.example.testassignment.service;
 
+import com.example.testassignment.entity.Room;
 import com.example.testassignment.repo.RoomRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 public class PointsService {
@@ -25,5 +28,9 @@ public class PointsService {
 
         roomRepository.addNewRoom(points);
         return true;
+    }
+
+    public List<Room> getRooms() {
+        return roomRepository.getRooms();
     }
 }

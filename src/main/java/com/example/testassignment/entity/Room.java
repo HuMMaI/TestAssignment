@@ -2,10 +2,12 @@ package com.example.testassignment.entity;
 
 public class Room {
     private int id;
+    private int numberOfPoint;
     private int[][] points;
 
-    public Room(int id, int[][] points) {
+    public Room(int id, int numberOfPoint, int[][] points) {
         this.id = id;
+        this.numberOfPoint = numberOfPoint;
         this.points = points;
     }
 
@@ -15,6 +17,14 @@ public class Room {
 
     public void setId(int id) {
         this.id = id;
+    }
+
+    public int getNumberOfPoint() {
+        return numberOfPoint;
+    }
+
+    public void setNumberOfPoint(int numberOfPoint) {
+        this.numberOfPoint = numberOfPoint;
     }
 
     public int[][] getPoints() {

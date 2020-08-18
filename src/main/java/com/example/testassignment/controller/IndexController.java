@@ -1,6 +1,7 @@
 package com.example.testassignment.controller;
 
 import com.example.testassignment.dto.CoordinateDto;
+import com.example.testassignment.entity.Room;
 import com.example.testassignment.service.PointsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -10,6 +11,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
+
+import java.util.List;
 
 @Controller
 public class IndexController {
@@ -31,6 +34,12 @@ public class IndexController {
         }
 
         return new ResponseEntity(HttpStatus.BAD_REQUEST);
+    }
+
+    @ResponseBody
+    @GetMapping("/rooms")
+    public List<Room> getRooms() {
+        return pointsService.getRooms();
     }
 
 }
