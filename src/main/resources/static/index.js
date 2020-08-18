@@ -90,12 +90,16 @@ $("#add-new-room").click(function (event) {
                             }
 
                             tableBody += "</td>\n" +
+                                "<td><button class=\"add-btn\" room-id=\"" + room.id + "\" id=\"btn-" + room.id + "\">Add</button></td>" +
                                 "</tr>";
 
-                            console.log(room);
                         });
-                        
+
+                        let size = Object.keys(data).length;
+
                         $("#rooms-table").html(tableBody);
+
+                        $("#btn-" + (size - 1)).prop("disabled", true);
                     })
             }
         })
@@ -115,6 +119,10 @@ $(document).on("click", ".del-btn", function(event) {
     })
         .done(function (data) {
             drawRoom(data.x, data.y, "black");
+
+            let btnId = "btn-" + roomId;
+
+            $("button[id=" + btnId + "]").prop("disabled", false);
 
             showOnBoardRooms();
         })
@@ -153,5 +161,24 @@ let drawRoom = (xValues, yValues, color) => {
 
     c.closePath();
     c.stroke();
-}
+};
+
+$(document).on("click", ".add-btn", function() {
+    let roomId = $(".add-btn").attr("room-id");
+
+    $.ajax({
+        url: "/rooms/on-board-upd?roomId=" + roomId + "&value=true",
+        type: "PUT"
+    })
+        .done(function (data, textStatus, xhr) {
+            drawRoom(data.x, data.y, "red");
+
+            $(".add-btn").prop("disabled", true);
+
+            showOnBoardRooms();
+        })
+        .fail(function() {
+            alert("Fail!!!");
+        });
+});
 

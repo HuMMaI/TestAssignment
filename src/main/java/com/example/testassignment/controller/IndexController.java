@@ -11,6 +11,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @Controller
 public class IndexController {
@@ -48,12 +49,17 @@ public class IndexController {
 
     @ResponseBody
     @PutMapping("/rooms/on-board-upd")
-    public RoomUpdateDto updateOnBoardRooms(@RequestParam("roomId") int roomId, @RequestParam("value") boolean value) {
+    public ResponseEntity<?> updateOnBoardRooms(@RequestParam("roomId") int roomId, @RequestParam("value") boolean value) {
         Room room = pointsService.getRoomById(roomId);
 
         room.setOnBoard(value);
 
-        return pointsService.updateOnBoardValue(room);
+        Optional<RoomUpdateDto> roomUpdateDtoMaybe = pointsService.updateOnBoardValue(room);
+        if (roomUpdateDtoMaybe.isPresent()) {
+            return new ResponseEntity(roomUpdateDtoMaybe.get(), HttpStatus.OK);
+        }
+
+        return new ResponseEntity(HttpStatus.BAD_REQUEST);
     }
 
 }
