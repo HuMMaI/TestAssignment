@@ -16,9 +16,9 @@ public class PointsService {
     @Autowired
     private RoomRepository roomRepository;
 
-    public boolean addNewRoom(int[][] points) {
+    public String addNewRoom(int[][] points) {
         if (!rightAngleChecker(points)){
-            return false;
+            return "Error! There are no right angles in your room!";
         }
 
         int preLastX = points[points.length - 1][0] - points[points.length - 2][0];
@@ -33,7 +33,7 @@ public class PointsService {
         boolean clockwiseCond4 = (preLastY < 0 && preLastX == 0) && (lastX > 0 && lastY == 0);
 
         if (!(clockwiseCond1 || clockwiseCond2 || clockwiseCond3 || clockwiseCond4)) {
-            return false;
+            return "Error! There are no clockwise points in your room!";
         }
 
         List<int[][]> onBoardPoints = getOnBoardRooms().stream()
@@ -41,11 +41,11 @@ public class PointsService {
                 .collect(Collectors.toList());
 
         if (!intersectionChecker(points, onBoardPoints)) {
-            return false;
+            return "Error! Your room intersects with another room!";
         }
 
         roomRepository.addNewRoom(points);
-        return true;
+        return "";
     }
 
     public List<Room> getRooms() {
@@ -76,10 +76,11 @@ public class PointsService {
         roomUpdateDto.setY(y);
 
         List<int[][]> onBoardPoints = getOnBoardRooms().stream()
+                .filter(s -> s.getId() != room.getId())
                 .map(Room::getPoints)
                 .collect(Collectors.toList());
 
-        if (!room.isOnBoard() || onBoardPoints.size() == 1) {
+        if (!room.isOnBoard() || onBoardPoints.size() <= 1) {
             return Optional.of(roomUpdateDto);
         }
 

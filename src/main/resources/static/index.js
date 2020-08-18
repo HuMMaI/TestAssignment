@@ -95,23 +95,21 @@ $("#add-new-room").click(function (event) {
 
                         });
 
-                        let size = Object.keys(data).length;
-
                         $("#rooms-table").html(tableBody);
 
-                        $("#btn-" + (size - 1)).prop("disabled", true);
+                        disableBtns();
                     })
             }
         })
-        .fail(function() {
-            alert("Fail!!");
+        .fail(function(data) {
+            alert(data.responseText);
         })
 });
 
 $(document).on("click", ".del-btn", function(event) {
     event.preventDefault();
 
-    let roomId = $(".del-btn").attr("room-id");
+    let roomId = $(this).attr("room-id");
 
     $.ajax({
         url: "/rooms/on-board-upd?roomId=" + roomId + "&value=false",
@@ -122,7 +120,7 @@ $(document).on("click", ".del-btn", function(event) {
 
             let btnId = "btn-" + roomId;
 
-            $("button[id=" + btnId + "]").prop("disabled", false);
+            $("#btn-" + roomId).prop("disabled", false);
 
             showOnBoardRooms();
         })
@@ -139,7 +137,7 @@ let showOnBoardRooms = () => {
             jQuery.each(rooms, function (num, room) {
                 onBoardData += "<tr>\n" +
                     "<td>" + room.id + "</td>\n" +
-                    "<td><button class=\"del-btn\" room-id=\"" + room.id + "\">Del</button></td>\n" +
+                    "<td><button class=\"del-btn\" id=\"del-bth" + room.id + "\" room-id=\"" + room.id + "\">Del</button></td>\n" +
                     "</tr>\n";
             });
 
@@ -164,7 +162,7 @@ let drawRoom = (xValues, yValues, color) => {
 };
 
 $(document).on("click", ".add-btn", function() {
-    let roomId = $(".add-btn").attr("room-id");
+    let roomId = $(this).attr("room-id");
 
     $.ajax({
         url: "/rooms/on-board-upd?roomId=" + roomId + "&value=true",
@@ -173,12 +171,24 @@ $(document).on("click", ".add-btn", function() {
         .done(function (data, textStatus, xhr) {
             drawRoom(data.x, data.y, "red");
 
-            $(".add-btn").prop("disabled", true);
+            $("#btn-" + roomId).prop("disabled", true);
 
             showOnBoardRooms();
         })
-        .fail(function() {
-            alert("Fail!!!");
+        .fail(function(data) {
+            alert(data.responseText);
         });
 });
 
+let disableBtns = () => {
+    $.get("/rooms/on-board")
+        .done(function(data) {
+            jQuery.each(data, function(num, room) {
+                $("#btn-" + room.id).prop("disabled", true);
+            });
+        });
+};
+
+$(document).on("click", ".clear-btn", function() {
+
+});

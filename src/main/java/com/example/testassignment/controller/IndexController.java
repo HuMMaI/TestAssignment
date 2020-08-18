@@ -26,13 +26,13 @@ public class IndexController {
     @ResponseBody
     @PostMapping("/add")
     public ResponseEntity<?> addNewRoom(@ModelAttribute CoordinateDto coordinateDto) {
-        boolean result = pointsService.addNewRoom(coordinateDto.getRoomPoints());
+        String result = pointsService.addNewRoom(coordinateDto.getRoomPoints());
 
-        if (result) {
+        if (result.equals("")) {
             return new ResponseEntity(HttpStatus.OK);
         }
 
-        return new ResponseEntity(HttpStatus.BAD_REQUEST);
+        return new ResponseEntity(result, HttpStatus.BAD_REQUEST);
     }
 
     @ResponseBody
@@ -59,7 +59,7 @@ public class IndexController {
             return new ResponseEntity(roomUpdateDtoMaybe.get(), HttpStatus.OK);
         }
 
-        return new ResponseEntity(HttpStatus.BAD_REQUEST);
+        return new ResponseEntity("Error! Your room intersects with another room!", HttpStatus.BAD_REQUEST);
     }
 
 }
