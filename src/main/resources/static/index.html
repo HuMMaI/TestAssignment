@@ -18,33 +18,81 @@
             flex-direction: row;
             justify-content: space-between;
         }
+
+        .room-data-box, .on-board-items {
+            display: flex;
+            flex-direction: row;
+            justify-content: space-between;
+        }
+
+        table, tr, td, th {
+            border: 1px solid black;
+        }
     </style>
 
 </head>
 <body>
 
 <div class="main">
-    <div>
-        <canvas id="canvas-el" width="600px" height="600px">
-
-        </canvas>
-    </div>
-
-    <div>
+    <div class="on-board-items">
         <div>
-            <span>Number of point:</span>
-            <input type="number" id="number-of-point">
-            <button id="add-number-of-point">Ok</button>
+            <canvas id="canvas-el" width="600px" height="600px">
+
+            </canvas>
         </div>
 
-        <div style="display: none" id="form">
-            <form>
-                <div id="form-elements">
+        <div>
+            <h3>On board</h3>
 
-                </div>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Id</th>
+                        <th>Del</th>
+                    </tr>
+                </thead>
+                <tbody id="on-board-data">
 
-                <input type="submit" value="Add point" id="add-new-room">
-            </form>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div class="room-data-box">
+        <div>
+            <div>
+                <span>Number of point:</span>
+                <br>
+                <input type="number" id="number-of-point">
+                <button id="add-number-of-point">Ok</button>
+            </div>
+
+            <div style="display: none" id="form">
+                <form>
+                    <div id="form-elements">
+
+                    </div>
+
+                    <input type="submit" value="Add point" id="add-new-room">
+                </form>
+            </div>
+        </div>
+
+        <div>
+            <h3>Rooms</h3>
+
+            <table>
+                <thead>
+                    <tr>
+                        <th>Id</th>
+                        <th>Number of point</th>
+                        <th>Coordinates</th>
+                    </tr>
+                </thead>
+                <tbody id="rooms-table">
+
+                </tbody>
+            </table>
         </div>
     </div>
 </div>

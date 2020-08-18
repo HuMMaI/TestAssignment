@@ -42,4 +42,10 @@ public class IndexController {
         return pointsService.getRooms();
     }
 
+    @ResponseBody
+    @GetMapping("/rooms/on-board")
+    public List<Room> getOnBoardRooms() {
+        return pointsService.getOnBoardRooms();
+    }
+
 }

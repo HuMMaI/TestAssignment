@@ -12,7 +12,7 @@ public class RoomRepository {
     private int lastId = 0;
 
     public void addNewRoom(int[][] points) {
-        Room room = new Room(lastId++, points.length, points);
+        Room room = new Room(lastId++, points.length, points, true);
 
         rooms.add(room);
     }

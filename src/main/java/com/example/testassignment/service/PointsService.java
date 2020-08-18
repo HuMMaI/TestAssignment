@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class PointsService {
@@ -32,5 +33,13 @@ public class PointsService {
 
     public List<Room> getRooms() {
         return roomRepository.getRooms();
+    }
+
+    public List<Room> getOnBoardRooms() {
+        List<Room> rooms = roomRepository.getRooms();
+
+        return rooms.stream()
+                .filter(Room::isOnBoard)
+                .collect(Collectors.toList());
     }
 }

@@ -4,11 +4,13 @@ public class Room {
     private int id;
     private int numberOfPoint;
     private int[][] points;
+    private boolean onBoard;
 
-    public Room(int id, int numberOfPoint, int[][] points) {
+    public Room(int id, int numberOfPoint, int[][] points, boolean onBoard) {
         this.id = id;
         this.numberOfPoint = numberOfPoint;
         this.points = points;
+        this.onBoard = onBoard;
     }
 
     public int getId() {
@@ -33,5 +35,13 @@ public class Room {
 
     public void setPoints(int[][] points) {
         this.points = points;
+    }
+
+    public boolean isOnBoard() {
+        return onBoard;
+    }
+
+    public void setOnBoard(boolean onBoard) {
+        this.onBoard = onBoard;
     }
 }

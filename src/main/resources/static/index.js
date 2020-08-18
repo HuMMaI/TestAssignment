@@ -87,6 +87,48 @@ $("#add-new-room").click(function (event) {
                 
                 c.closePath();
                 c.stroke();
+
+                $.get("/rooms/on-board")
+                    .done(function(rooms) {
+                        let onBoardData = "";
+
+                        jQuery.each(rooms, function (num, room) {
+                            onBoardData += "<tr>\n" +
+                                "<td>" + room.id + "</td>\n" +
+                                "<td><button room-id=\"" + room.id + "\">Del</button></td>\n" +
+                                "</tr>\n";
+                        });
+
+                        $("#on-board-data").html(onBoardData);
+                    });
+
+                $.get("/rooms")
+                    .done(function(data) {
+                        let tableBody = "";
+
+                        jQuery.each(data, function(num, room) {
+
+                            tableBody += "<tr>" +
+                                "<td>" + room.id + "</td>\n" +
+                                "<td>" + room.numberOfPoint + "</td>\n" +
+                                "<td>";
+
+                            for (let i = 0; i < room.numberOfPoint; i++) {
+                                tableBody += "(" + room.points[i][0] + "; " + room.points[i][1] + ")";
+
+                                if (i !== room.numberOfPoint - 1) {
+                                    tableBody += ", ";
+                                }
+                            }
+
+                            tableBody += "</td>\n" +
+                                "</tr>";
+
+                            console.log(room);
+                        });
+                        
+                        $("#rooms-table").html(tableBody);
+                    })
             }
         })
         .fail(function() {
