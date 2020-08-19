@@ -88,11 +88,14 @@ public class PointsService {
                 .map(Room::getPoints)
                 .collect(Collectors.toList());
 
-        if (!room.isOnBoard() || onBoardPoints.size() <= 1) {
+        if (!room.isOnBoard() || onBoardPoints.size() == 0) {
             return Optional.of(roomUpdateDto);
         }
 
         if (!intersectionChecker(points, onBoardPoints)) {
+            room.setOnBoard(false);
+            roomRepository.updateOnBoardValue(room);
+
             return Optional.empty();
         }
 
